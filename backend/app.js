@@ -1,13 +1,18 @@
 const { log } = require("console");
+require('dotenv').config();
 const express = require("express");
-
+const user = require("./models/user");
 const app = express();
-require("dotenv").config();
-require("./connection/conn");
+const  connectDB  = require ("./connection/db")
 
 // app.get('/' , (req, res) =>{
 //     res.send('Hello from backend')
 // })
+connectDB();
+
+app.use(express.json());
+//routes
+app.use("/api/v1/sign-up",user); 
 
 // creating port
 app.listen(process.env.PORT, () => {
