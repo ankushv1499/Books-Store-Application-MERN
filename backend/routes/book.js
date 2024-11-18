@@ -91,4 +91,19 @@ router.get("get-recent-books" ,authenticationToken, async (req,res) => {
         return res.status(500).json({ message: "An error occured" });
     }
 });
+
+// get book by ID
+router.get("get-book-by-id/:id" ,authenticationToken, async (req,res) => {
+    try {
+        const {id} = req.params;
+        const book = await Book.findById(id);
+        return res.json({
+            status: "Success",
+            data: book,
+        })
+    } catch (error) {
+        return res.status(500).json({ message: "An error occured" });
+    }
+});
+
 module.exports = router;
