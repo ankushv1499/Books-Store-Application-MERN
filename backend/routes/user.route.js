@@ -3,6 +3,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { authenticationToken } = require("./userAuth");
+const user = require("../models/user");
 
 // Sign-Up
 router.post("/sign-up", async (req, res) => {
@@ -89,16 +90,27 @@ router.post("/sign-in", async (req, res) => {
 });
 
 // get user-information
-
-router.get("/get-user-information", authenticationToken, async (res,req) => {
+router.get("/get-user-information", authenticationToken, async (res, req) => {
     try {
-        const {id} = req.headers;
+        const { id } = req.headers;
         const data = await user.findById(id).select('-password');
         return res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: "Internal server error" })
     }
 })
+
+//update address
+router.put("/update-address", authenticationToken, async (res, req) => {
+    try {
+        const { id } = req.headers;
+        const { address } = req.body;
+        await user.findByIdAndUpdate(id, { address: address });
+        return res.status(200).json({ message: "Address Update Successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" })
+    }
+});
 
 
 module.exports = router;
