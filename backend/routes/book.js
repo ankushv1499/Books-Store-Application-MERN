@@ -9,10 +9,9 @@ const { title } = require("process");
 //add-books --admin
 router.post("/add-book", authenticationToken, async (req, res) => {
     try {
-        const {id} = req.headers;
+        const { id } = req.headers;
         const user = await User.findById(id);
-        if(user.role !== "admin") 
-        {
+        if (user.role !== "admin") {
             return res.status(400).json({ message: "Ypu not having access of admin" });
         }
         const book = new Book({
@@ -24,18 +23,18 @@ router.post("/add-book", authenticationToken, async (req, res) => {
             language: req.body.language
         });
         await book.save();
-        res.status(200).json({message: "Book added successfully"})
+        res.status(200).json({ message: "Book added successfully" })
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
 
 });
 //updateBook
-router.put("/update-book", authenticationToken, async (req, res)=>{
+router.put("/update-book", authenticationToken, async (req, res) => {
     try {
-        const {bookid} = req.headers;
+        const { bookid } = req.headers;
         await Book.findByIdAndUpdate(bookid, {
-        
+
             url: req.body.url,
             title: req.body.title,
             author: req.body.author,
@@ -44,12 +43,26 @@ router.put("/update-book", authenticationToken, async (req, res)=>{
             language: req.body.language
         });
         return res.status(200)
-        .json({message: "Book update  successfully"})
+            .json({ message: "Book update  successfully" })
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Internal server error" });
     }
 
+});
+
+// deleteBook--admin
+
+router.delete("/delete-book", authenticationToken, async (req, res) => {
+    try {
+        const { bookid } = req.headers;
+        await Book.findByIdAndDelete(bookid);
+        return res.status(200).json({ message: "book deleted successfully" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error" });
+
+    }
 })
 
 module.exports = router;
