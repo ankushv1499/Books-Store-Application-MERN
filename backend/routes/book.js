@@ -63,6 +63,32 @@ router.delete("/delete-book", authenticationToken, async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
 
     }
-})
+});
 
+//get-all books
+
+router.get("get-all-books" ,authenticationToken, async (req,res) => {
+    try {
+        const books = await Book.find().sort({ createdAt: -1 });
+        return res.json({
+            status: "Success",
+            data: books,
+        })
+    } catch (error) {
+        return res.status(500).json({ message: "An error occured" });
+    }
+});
+
+//get recently added 4 books
+router.get("get-recent-books" ,authenticationToken, async (req,res) => {
+    try {
+        const books = await Book.find().sort({ createdAt: -1 }).limit(4);
+        return res.json({
+            status: "Success",
+            data: books,
+        })
+    } catch (error) {
+        return res.status(500).json({ message: "An error occured" });
+    }
+});
 module.exports = router;
