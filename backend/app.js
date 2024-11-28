@@ -1,7 +1,6 @@
 const { log } = require("console");
 require('dotenv').config();
 const express = require("express");
-const user = require("./models/user");
 const app = express();
 const  connectDB  = require ("./connection/db")
 
