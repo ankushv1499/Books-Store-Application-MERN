@@ -19,7 +19,7 @@ router.post("/add-book", authenticationToken, async (req, res) => {
             title: req.body.title,
             author: req.body.author,
             price: req.body.price,
-            decs: req.body.decs,
+            decs: req.body.desc,
             language: req.body.language
         });
         await book.save();
@@ -39,7 +39,7 @@ router.put("/update-book", authenticationToken, async (req, res) => {
             title: req.body.title,
             author: req.body.author,
             price: req.body.price,
-            decs: req.body.decs,
+            decs: req.body.desc,
             language: req.body.language
         });
         return res.status(200)
@@ -67,7 +67,7 @@ router.delete("/delete-book", authenticationToken, async (req, res) => {
 
 //get-all books
 
-router.get("get-all-books" ,authenticationToken, async (req,res) => {
+router.get("get-all-books", authenticationToken, async (req, res) => {
     try {
         const books = await Book.find().sort({ createdAt: -1 });
         return res.json({
@@ -80,7 +80,7 @@ router.get("get-all-books" ,authenticationToken, async (req,res) => {
 });
 
 //get recently added 4 books
-router.get("get-recent-books" ,authenticationToken, async (req,res) => {
+router.get("get-recent-books", authenticationToken, async (req, res) => {
     try {
         const books = await Book.find().sort({ createdAt: -1 }).limit(4);
         return res.json({
@@ -93,9 +93,9 @@ router.get("get-recent-books" ,authenticationToken, async (req,res) => {
 });
 
 // get book by ID
-router.get("get-book-by-id/:id" ,authenticationToken, async (req,res) => {
+router.get("get-book-by-id/:id", authenticationToken, async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const book = await Book.findById(id);
         return res.json({
             status: "Success",

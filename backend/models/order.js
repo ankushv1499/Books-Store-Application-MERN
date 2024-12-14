@@ -1,24 +1,24 @@
 const { timeStamp } = require("console");
-const mongoose = require ("mongoose");
+const mongoose = require("mongoose");
 
 const order = new mongoose.Schema({
-    user:  {
+    user: {
         type: mongoose.Types.ObjectId,
-        ref: "user",
+        ref: "User",
     },
-    
-    book:  {
+
+    book: {
         type: mongoose.Types.ObjectId,
-        ref: "books",
+        ref: "Book",
     },
-    status:  {
+    status: {
         type: String,
         default: "Order Placed",
-        enum: ["Order Placed","Out for Delivered, Canceled"],
+        enum: ["Order Placed", "Out for Delivered", "Canceled"],
     },
 
 },
-{timeStamp: true}
+    { timestamps: true }
 );
 
-module.exports = mongoose.Model("order" , order)
+module.exports = mongoose.model("Order", order)

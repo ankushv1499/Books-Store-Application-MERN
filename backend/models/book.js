@@ -1,31 +1,33 @@
-const mongoose = require ("mongoose");
+const mongoose = require("mongoose");
 
 const book = new mongoose.Schema({
-    url:{
-
+    url: {
+        type: String,
+        required: true, 
     },
-   title:{
-    required: ture,
-   },
-   author: {
-    type: String,
-    required: true,
-   },
-   price: {
-    type: Number,
-    required: true,
-   },
-   desc: {
-    type: String,
-    required: true,
-   },
-   language: {
-    type:String,
-    required: true
-   }
+    title: {
+        type: String,
+        required: true,
+    },
+    author: {
+        type: String,
+        required: true,
+    },
+    price: {
+        type: Number,
+        required: true,
+    },
+    desc: {
+        type: String,
+        required: true,
+    },
+    language: {
+        type: String,
+        required: true
+    },
 
 },
-{timeStamp: true}
+    { timestamps: true }
 );
 
-module.exports = mongoose.Model("books" , book)
+module.exports = mongoose.model("Book", book);

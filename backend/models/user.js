@@ -33,19 +33,19 @@ const user = new mongoose.Schema({
     favourites: [
         {
         type: mongoose.Types.ObjectId,
-        ref: "books",
+        ref: "Book",
         },
     ],
     cart: [
         {
         type: mongoose.Types.ObjectId,
-        ref: "books",
+        ref: "Book",
         },
     ],
-    order: [
+    orders: [
         {
         type: mongoose.Types.ObjectId,
-        ref: "order",
+        ref: "Order",
         },
     ],
 

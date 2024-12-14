@@ -1,11 +1,11 @@
 const router = require("express").Router;
 const User = require("../models/user");
-const { authenticateToken } = require("./userAuth");
+const { authenticationToken } = require("./userAuth");
 
 
 //add to cart 
 
-router.put("/add-to-cart", authenticateToken , async (req, res) => {
+router.put("/add-to-cart", authenticationToken , async (req, res) => {
  try {
     const { bookid, id } = req.headers;
     const userData = await User.findById(id);
@@ -32,7 +32,7 @@ router.put("/add-to-cart", authenticateToken , async (req, res) => {
 });
 
 // remove from the cart
-router.put("/remove-from-cart/:bookid", authenticateToken, async (req, res) => {
+router.put("/remove-from-cart/:bookid", authenticationToken, async (req, res) => {
     try {
         const {bookid} = req.params;
         const{id} = req.headers;
