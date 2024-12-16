@@ -1,9 +1,8 @@
-require('dotenv').config();
-const { log } = require("console");
-const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
-const  connectDB  = require ("./connection/conn")
+require('dotenv').config();
+require ("./connection/conn")
+const { log } = require("console");
 const User = require("./routes/user.route");
 const Books = require("./routes/book");
 const Favourite = require("./routes/favourite")
