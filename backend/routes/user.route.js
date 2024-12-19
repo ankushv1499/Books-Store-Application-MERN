@@ -160,11 +160,11 @@ router.get("/get-user-information", authenticationToken, async (req, res) => {
 });
 
 //update address
-router.put("/update-address", authenticationToken, async (res, req) => {
+router.put("/update-address", authenticationToken, async (req, res) => {
     try {
         const { id } = req.headers;
         const { address } = req.body;
-        await user.findByIdAndUpdate(id, { address: address });
+        await User.findByIdAndUpdate(id, { address: address });
         return res.status(200).json({ message: "Address Update Successfully" });
     } catch (error) {
         res.status(500).json({ message: "Internal server error" })
