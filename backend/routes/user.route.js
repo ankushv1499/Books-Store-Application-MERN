@@ -3,28 +3,33 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { authenticationToken } = require("./userAuth");
-const user = require("../models/user");
+
 
 // Sign-Up
 router.post("/sign-up", async (req, res) => {
     try {
-        const { username, email, password, addresss } = req.body;
+        const { username, email, password, address } = req.body;
 
         //check username length more than 3
         if (username.length < 4) {
             return res
-                .status
+                .status(400)
                 .json({ message: "Username should be more than 3" });
 
         }
+         // Validate required fields
+         if (!username || !email || !password || !address) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
         //check username already exit ?
-        const existingUsername = await user.findOne({ username: username });
+        const existingUsername = await User.findOne({ username: username });
         if (existingUsername) {
             return res.status(400).json({ message: "username is already exist" })
 
         }
         //check email already exit ?
-        const existingEmail = await user.findOne({ email: email });
+        const existingEmail = await User.findOne({ email: email });
         if (existingEmail) {
             return res.status(400).json({ message: "email is already exist" })
 
@@ -38,7 +43,7 @@ router.post("/sign-up", async (req, res) => {
         }
         const hashPass = await bcrypt.hash(password, 10);
 
-        const newUser = new user({
+        const newUser = new User({
             username: username,
             email: email,
             password: hashPass,
@@ -49,6 +54,7 @@ router.post("/sign-up", async (req, res) => {
         return res.status(200).json({ message: "Sign-up successfully" })
 
     } catch (error) {
+        console.error("Error in Sign-Up route:", error);
         res.status(500).json({ message: "Internal server error" })
     }
 });
@@ -60,10 +66,12 @@ router.post("/sign-in", async (req, res) => {
 
         const existingUser = await User.findOne({ username });
 
-        if (existingUser) {
+        // Check if the user exists in the database
+        if (!existingUser) {
             res.status(400).json({ message: "Invalid credentials" });
         }
 
+        // Compare provided password with hashed password
         await bcrypt.compare(password, existingUser.password, (err, data) => {
             if (data) {
                 const authClaims = [
@@ -89,16 +97,67 @@ router.post("/sign-in", async (req, res) => {
     }
 });
 
+/*
+router.post("/sign-in", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Check if the user exists in the database
+        const existingUser = await User.findOne({ username });
+
+        if (!existingUser) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        // Compare provided password with hashed password
+        const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        // Create JWT token
+        const authClaims = {
+            id: existingUser._id,
+            username: existingUser.username,
+            role: existingUser.role,
+        };
+        const token = jwt.sign(authClaims, "bookStore123", { expiresIn: "30d" });
+
+        // Return success response with token
+        res.status(200).json({
+            id: existingUser._id,
+            role: existingUser.role,
+            token: token,
+        });
+    } catch (error) {
+        console.error("Error during sign-in:", error); // Log the error for debugging
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+*/
+
+
 // get user-information
-router.get("/get-user-information", authenticationToken, async (res, req) => {
+router.get("/get-user-information", authenticationToken, async (req, res) => {
     try {
         const { id } = req.headers;
-        const data = await user.findById(id).select('-password');
+
+        if (!id) {
+            return res.status(400).json({ message: "User ID is required" });
+        }
+
+        const data = await User.findById(id).select("-password");
+
+        if (!data) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
         return res.status(200).json(data);
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" })
+        console.error("Error fetching user information:", error); // Debugging
+        res.status(500).json({ message: "Internal server error" });
     }
-})
+});
 
 //update address
 router.put("/update-address", authenticationToken, async (res, req) => {
