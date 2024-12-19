@@ -1,13 +1,15 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
-require('dotenv').config();
-require ("./connection/conn")
+const conn = require('./connection/conn');
+conn();
 const { log } = require("console");
 const User = require("./routes/user.route");
 const Books = require("./routes/book");
 const Favourite = require("./routes/favourite")
 const Order = require("./routes/order");
 const Cart = require("./routes/cart");
+
 
 app.use(express.json());
 //routes

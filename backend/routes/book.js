@@ -66,7 +66,6 @@ router.delete("/delete-book", authenticationToken, async (req, res) => {
 });
 
 //get-all books
-
 router.get("get-all-books", authenticationToken, async (req, res) => {
     try {
         const books = await Book.find().sort({ createdAt: -1 });

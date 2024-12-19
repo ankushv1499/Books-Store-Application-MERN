@@ -1,4 +1,4 @@
-const router = require("express").Router;
+const router = require("express").Router();
 const User = require("../models/user");
 const { authenticationToken } = require("./userAuth");
 
@@ -55,11 +55,11 @@ router.put("/remove-from-cart/:bookid", authenticationToken, async (req, res) =>
 router.get("/get-user-cart", authenticationToken, async(req, res) =>{
     try {
         const {id} = req.headers;
-        const userData = await User.findById(id).populate(favourites);
-        const cart = userData.cart.reverse();
+        const userData = await User.findById(id).populate("cart");
+        const cart = userData.cart;
         return res.json({
             status: "Success",
-            data: cart,
+            data: cart.reverse(),
         });
     } catch (error) {
         return res.status(500).json({ message: "Internal server error" });
