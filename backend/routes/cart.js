@@ -8,6 +8,13 @@ const { authenticationToken } = require("./userAuth");
 router.put("/add-to-cart", authenticationToken , async (req, res) => {
  try {
     const { bookid, id } = req.headers;
+     // Validate input
+     if (!id || !bookid) {
+        return res.status(400).json({ 
+            status: "Error", 
+            message: "User ID and Book ID are required" 
+        });
+    }
     const userData = await User.findById(id);
     const isBookinCart = userData.cart.includes(bookid);
     if(isBookinCart){
@@ -21,7 +28,7 @@ router.put("/add-to-cart", authenticationToken , async (req, res) => {
         $push: {cart: bookid},
     });
 
-    return res.json({
+    return res.status(200).json({
         status: "Success",
         message: "Book added to cart",
     });
