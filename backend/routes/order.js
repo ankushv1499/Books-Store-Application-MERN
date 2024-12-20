@@ -6,7 +6,7 @@ const { populate } = require("../models/user");
 const User = require("../models/user") 
 
     //place order
-    router.post("/place-order", authenticationToken, async (req, res) => {
+router.post("/place-order", authenticationToken, async (req, res) => {
         try {
             const { id } = req.headers;
             const { order } = req.body;
@@ -34,7 +34,7 @@ const User = require("../models/user")
             return res.status(500).json({ message: "An error occured" })
         }
 
-    });
+});
 
 // get order history from perticular user
 router.get("/get-order-history", authenticationToken, async (req, res) => {
