@@ -1,12 +1,13 @@
 import React from 'react'
-import Navbar from './componets/Navbar/Navbar'
+import Navbar from './components/Navbar/Navbar'
 import Home from './pages/Home'
-import Footer from './componets/Footer/Footer'
+import Footer from './components/Footer/Footer'
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import AllBooks from "./pages/AllBooks";
 import LogIn from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Profile from './pages/Profile';
+import Cart from './pages/Cart';
 
 
 
