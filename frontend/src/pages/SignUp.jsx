@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // For navigation
+import { Link, useNavigate } from "react-router-dom"; // For navigation
 
 const SignUp = () => {
   // State to hold form data for username, email, password, and address
@@ -9,6 +9,7 @@ const SignUp = () => {
     password: "",
     address: "",
   });
+  const navigate = useNavigate();// Initialize navigate
 
   // State to handle validation errors
   const [error, setError] = useState("");
@@ -49,6 +50,9 @@ const SignUp = () => {
       // Handle success response
       setSuccess("Signup Successful!");
       console.log("Backend Response:", response.data);
+       // Redirect to the login page after success
+      navigate("/login")/
+
     } catch (error) {
       // Handle error response
       setError(
