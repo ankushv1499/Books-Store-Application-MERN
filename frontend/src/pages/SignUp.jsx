@@ -20,7 +20,7 @@ const SignUp = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from refreshing the page on submit
     const { username, email, password, address } = formData;
 
@@ -36,7 +36,26 @@ const SignUp = () => {
     }
 
     setError(""); // Clear errors if validation passes
-    console.log("Signup Successful", formData); // Simulate form submission
+    // console.log("Signup Successful", formData); // Simulate form submission
+
+    try {
+      //send form data to the backend
+      // Backend API call
+      const response = await axios.post(
+        "https://localhost:1000/api/v1/sign-up",
+        formData
+      );
+
+      // Handle success response
+      setSuccess("Signup Successful!");
+      console.log("Backend Response:", response.data);
+    } catch (error) {
+      // Handle error response
+      setError(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+      console.error("Backend Error:", error);
+    }
   };
 
   return (
