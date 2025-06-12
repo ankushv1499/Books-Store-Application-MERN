@@ -1,4 +1,4 @@
-﻿# Books-store-Application_MERN
+﻿# Books-store-Application-MERN
 
 A comprehensive Book Store application that allows users to browse, search, and manage books efficiently.
 
